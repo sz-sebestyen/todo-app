@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const errorHandler = require("./middlewares/errorHandler");
+require("express-async-errors");
 
 const indexRouter = require("./routes/index");
 

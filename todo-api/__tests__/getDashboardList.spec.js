@@ -5,6 +5,38 @@ const DashboardList = require("../models/DashboardList");
 
 const { dbConnect, dbDisconnect } = require("../memoryDB");
 
+// const example = {
+//   user_id: "1231231",
+//   dashboards: [
+//     {
+//       title: "this is a dashboard",
+//       todos: [
+//         {
+//           title: "do something",
+//           description: "really important",
+//         },
+//         {
+//           title: "do something #2",
+//           description: "really important",
+//         },
+//       ],
+//     },
+//     {
+//       title: "this is a dashboard #2",
+//       todos: [
+//         {
+//           title: "do something",
+//           description: "really important",
+//         },
+//         {
+//           title: "do something #2",
+//           description: "really important",
+//         },
+//       ],
+//     },
+//   ],
+// };
+
 beforeAll(async () => {
   await dbConnect();
 });
