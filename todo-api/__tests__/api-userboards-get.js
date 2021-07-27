@@ -5,15 +5,17 @@ const Userboard = require("../models/Userboard");
 
 const { dbConnect, dbDisconnect } = require("./__utils__/memoryDB");
 
+let mongoServer;
+
 beforeAll(async () => {
-  await dbConnect();
+  mongoServer = await dbConnect();
 });
 
 afterAll(async () => {
-  await dbDisconnect();
+  await dbDisconnect(mongoServer);
 });
 
-describe("getUserboard", () => {
+describe("get api/userboards", () => {
   afterEach(async () => {
     await Userboard.deleteMany({});
   });

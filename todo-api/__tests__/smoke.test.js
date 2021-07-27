@@ -41,12 +41,14 @@ const example = {
   ],
 };
 
+let mongoServer;
+
 beforeAll(async () => {
-  await dbConnect();
+  mongoServer = await dbConnect();
 });
 
 afterAll(async () => {
-  await dbDisconnect();
+  await dbDisconnect(mongoServer);
 });
 
 describe("smoke test", () => {
