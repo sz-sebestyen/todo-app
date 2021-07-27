@@ -6,7 +6,7 @@ const cors = require("cors");
 const errorHandler = require("./middlewares/errorHandler");
 require("express-async-errors");
 
-const indexRouter = require("./routes/index");
+const userboardRouter = require("./routes/userboardRouter");
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/api", indexRouter);
+app.use("/api/userboards", userboardRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

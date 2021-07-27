@@ -23,3 +23,9 @@ exports.dbDisconnect = async () => {
   await mongoose.connection.close();
   await mongoServer.stop();
 };
+
+exports.dbClearCollectinos = async (models) => {
+  const deletions = models.map((model) => model.deleteMany({}));
+
+  await Promise.all(deletions);
+};
