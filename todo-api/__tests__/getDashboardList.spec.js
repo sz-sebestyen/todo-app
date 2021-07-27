@@ -3,7 +3,7 @@ const supertest = require("supertest");
 const request = supertest(app);
 const Userboard = require("../models/Userboard");
 
-const { dbConnect, dbDisconnect } = require("../memoryDB");
+const { dbConnect, dbDisconnect } = require("./__utils__/memoryDB");
 
 beforeAll(async () => {
   await dbConnect();

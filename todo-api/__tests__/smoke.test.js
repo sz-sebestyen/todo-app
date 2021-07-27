@@ -3,7 +3,11 @@ const supertest = require("supertest");
 const request = supertest(app);
 const Userboard = require("../models/Userboard");
 
-const { dbConnect, dbDisconnect, dbClearCollectinos } = require("../memoryDB");
+const {
+  dbConnect,
+  dbDisconnect,
+  dbClearCollectinos,
+} = require("./__utils__/memoryDB");
 
 const example = {
   user_id: "1231231",
