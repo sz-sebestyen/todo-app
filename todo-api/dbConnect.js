@@ -4,6 +4,7 @@ const mongooseOptions = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 };
 
 module.exports = () => {

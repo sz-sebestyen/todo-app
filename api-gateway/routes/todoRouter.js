@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 const httpProxy = require("http-proxy");
 const proxy = httpProxy.createProxyServer({});
@@ -9,14 +10,20 @@ proxy.on("error", function (e) {
 });
 
 proxy.on("proxyReq", function (proxyReq, req, res, options) {
-  proxyReq.setHeader("X-user_id", "asdfasdf");
+  if (!req.headers.authorization) return;
+
+  const split = req.headers.authorization.split(" ");
+
+  if (split[0] !== "Bearer" || !split[1]) return;
+
+  const decoded = jwt.decode(split[1]);
+
+  if (!decoded?.sub) return res.status(401).json({ message: "Unauthorized" });
+
+  proxyReq.setHeader("X-user_id", decoded.sub);
 });
 
 router.use("/*", async (req, res, next) => {
-  // const user_id = req.headers["x-user_id"];
-
-  // if (!user_id) return res.status(401).json({ message: "Unauthorized" });
-
   proxy.web(req, res, { target: `http://localhost:3001/${req.params[0]}` });
 });
 
