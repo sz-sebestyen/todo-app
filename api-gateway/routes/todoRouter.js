@@ -9,18 +9,18 @@ proxy.on("error", function (e) {
   console.log(e);
 });
 
-proxy.on("proxyReq", function (proxyReq, req, res, options) {
-  if (!req.headers.authorization) return;
+const jwtRegex = /^Bearer\s(?<jwt>.+)$/;
 
-  const split = req.headers.authorization.split(" ");
+proxy.on("proxyReq", function (proxyReq, req, res, options) {
+  const match = (req.headers.authorization || "").match(jwtRegex);
 
   const deleteUserId = () => {
     proxyReq.removeHeader("X-user_id");
   };
 
-  if (split[0] !== "Bearer" || !split[1]) return deleteUserId();
+  if (!match) return deleteUserId();
 
-  const decoded = jwt.decode(split[1]);
+  const decoded = jwt.decode(match.groups.jwt);
 
   if (!decoded?.sub) return deleteUserId();
 
