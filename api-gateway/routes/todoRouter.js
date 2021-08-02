@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const httpProxy = require("http-proxy");
 const proxy = httpProxy.createProxyServer({});
 
+const { JWT_SECRET } = process.env;
+
 proxy.on("error", function (e) {
   console.log(e);
 });
@@ -15,7 +17,7 @@ const getUserId = (auth = "") => {
   if (!match) return;
 
   try {
-    const decoded = jwt.decode(match.groups.jwt);
+    const decoded = jwt.verify(match.groups.jwt, JWT_SECRET);
 
     return decoded?.sub;
   } catch (error) {
