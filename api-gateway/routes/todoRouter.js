@@ -9,22 +9,26 @@ proxy.on("error", function (e) {
   console.log(e);
 });
 
-const jwtRegex = /^Bearer\s(?<jwt>.+)$/;
+const getUserId = (auth = "") => {
+  const match = auth.match(/^Bearer\s(?<jwt>.+)$/i);
+
+  if (!match) return;
+
+  try {
+    const decoded = jwt.decode(match.groups.jwt);
+
+    return decoded?.sub;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 proxy.on("proxyReq", function (proxyReq, req, res, options) {
-  const match = (req.headers.authorization || "").match(jwtRegex);
+  const userId = getUserId(req.headers.authorization);
 
-  const deleteUserId = () => {
-    proxyReq.removeHeader("X-user_id");
-  };
-
-  if (!match) return deleteUserId();
-
-  const decoded = jwt.decode(match.groups.jwt);
-
-  if (!decoded?.sub) return deleteUserId();
-
-  proxyReq.setHeader("X-user_id", decoded.sub);
+  userId
+    ? proxyReq.setHeader("X-user_id", userId)
+    : proxyReq.removeHeader("X-user_id");
 });
 
 router.use("/*", async (req, res, next) => {
