@@ -14,11 +14,15 @@ proxy.on("proxyReq", function (proxyReq, req, res, options) {
 
   const split = req.headers.authorization.split(" ");
 
-  if (split[0] !== "Bearer" || !split[1]) return;
+  const deleteUserId = () => {
+    proxyReq.removeHeader("X-user_id");
+  };
+
+  if (split[0] !== "Bearer" || !split[1]) return deleteUserId();
 
   const decoded = jwt.decode(split[1]);
 
-  if (!decoded?.sub) return res.status(401).json({ message: "Unauthorized" });
+  if (!decoded?.sub) return deleteUserId();
 
   proxyReq.setHeader("X-user_id", decoded.sub);
 });
