@@ -10,6 +10,7 @@ const testRouter = require("./routes/testRouter");
 const todoRouter = require("./routes/todoRouter");
 const loginRouter = require("./routes/loginRouter");
 const codeRouter = require("./routes/codeRouter");
+const authCheckRouter = require("./routes/authCheckRouter");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/test", testRouter);
 app.use("/api/todo", todoRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/code", codeRouter);
+app.use("/api/authcheck", authCheckRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
