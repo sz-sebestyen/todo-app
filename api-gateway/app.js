@@ -3,8 +3,10 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-const errorHandler = require("./middlewares/errorHandler");
 require("express-async-errors");
+
+const errorHandler = require("./middlewares/errorHandler");
+const identifyUser = require("./middlewares/identifyUser");
 
 const testRouter = require("./routes/testRouter");
 const todoRouter = require("./routes/todoRouter");
@@ -21,10 +23,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api/test", testRouter);
-app.use("/api/todo", todoRouter);
+app.use("/api/todo", [identifyUser, todoRouter]);
 app.use("/api/login", loginRouter);
 app.use("/api/code", codeRouter);
-app.use("/api/authcheck", authCheckRouter);
+app.use("/api/authcheck", [identifyUser, authCheckRouter]);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

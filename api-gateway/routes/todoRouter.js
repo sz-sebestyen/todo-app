@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const getUserId = require("./getUserId");
 
 const httpProxy = require("http-proxy");
 const proxy = httpProxy.createProxyServer({});
@@ -12,7 +11,7 @@ proxy.on("error", function (e) {
 proxy.on("proxyReq", function (proxyReq, req, res, options) {
   proxyReq.removeHeader("X-user_id");
 
-  const userId = getUserId(req.headers.authorization);
+  const { userId } = req;
 
   userId && proxyReq.setHeader("X-user_id", userId);
 });
