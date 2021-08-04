@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = process.env;
 
 const identifyUser = (req, res, next) => {
+  const { JWT_SECRET } = process.env;
+
   const match = (req.headers.authorization || "").match(
     /^Bearer\s(?<jwt>.+)$/i
   );

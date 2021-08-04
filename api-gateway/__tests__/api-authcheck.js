@@ -1,6 +1,10 @@
+// process.env["JWT_SECRET"] = "jwt-test";
+
+require("dotenv").config({ path: ".env.test" });
 const app = require("../app");
 const supertest = require("supertest");
 const request = supertest(app);
+const jwt = require("jsonwebtoken");
 
 describe("api/authcheck", () => {
   describe("when no auth token is present", () => {
@@ -22,7 +26,9 @@ describe("api/authcheck", () => {
   describe("when auth token is present", () => {
     it("should return 200", async () => {
       // given
-      const token = "Bearer";
+      const sub = "user id";
+
+      const token = jwt.sign({ sub }, process.env.JWT_SECRET);
 
       // when
       const response = request
