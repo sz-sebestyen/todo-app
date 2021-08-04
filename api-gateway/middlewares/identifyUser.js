@@ -8,15 +8,13 @@ const identifyUser = (req, res, next) => {
 
   if (!match) return next();
 
-  try {
-    const decoded = jwt.verify(match.groups.jwt, JWT_SECRET);
+  jwt.verify(match.groups.jwt, JWT_SECRET, (err, decoded) => {
+    if (!err) {
+      req.userId = decoded?.sub;
+    }
 
-    req.userId = decoded?.sub;
-  } catch (error) {
-    console.log(error);
-  }
-
-  next();
+    next();
+  });
 };
 
 module.exports = identifyUser;
