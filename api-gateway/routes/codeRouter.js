@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const fetch = require("node-fetch");
+const axios = require("axios");
 const jwt = require("jsonwebtoken");
 
 const { CLIENT_ID, REDIRECT_URI, CLIENT_SECRET, JWT_SECRET } = process.env;
@@ -21,11 +21,9 @@ router.get("/", async (req, res, next) => {
 
   const googleUrl = `https://oauth2.googleapis.com/token?${query}`;
 
-  const response = await fetch(googleUrl, {
-    method: "POST",
-  });
+  const response = await axios.post(googleUrl);
 
-  const json = await response.json();
+  const json = response.data;
 
   console.log("tokens:", json);
 
